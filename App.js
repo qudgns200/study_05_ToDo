@@ -33,7 +33,7 @@ export default class App extends React.Component {
             autoCorrect={false}
             />
             <ScrollView contentContainerStyle={styles.todos}>
-              <ToDo />
+              <ToDo text={"Hello!!!"}/>
             </ScrollView>
         </View>
       </View>
@@ -89,6 +89,6 @@ const styles = StyleSheet.create({
     fontSize: 25
   },
   todos: {
-   alignItems: "center" 
+   alignItems: "center"
   }
 });
