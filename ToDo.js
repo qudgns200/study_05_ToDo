@@ -6,20 +6,26 @@ import {
     StyleSheet, 
     Dimensions, 
     TextInput
-} from "react-native"
+} from "react-native";
+import PropTypes from "prop-types";
 
 const {width, height} = Dimensions.get("window");
 
 export default class ToDo extends Component {
-    state ={
-        isEditing: false,
-        isCompleted: false,
-        ToDoValue: ""
-    };
+    constructor(props) {
+        super(props);
+        this.state = { isEditing: false, ToDoValue: props.text}
+    }
+    static propTypes = {
+        text: PropTypes.string.isRequired,
+        isCompleted: PropTypes.bool.isRequired,
+        deleteToDo: PropTypes.func.isRequired,
+        id: PropTypes.string.isRequired
+    }
 
     render() {
         const {isCompleted, isEditing} = this.state;
-        const { text } = this.props;
+        const { text, id, deleteToDo } = this.props;
         
         return (
             <View style={styles.container}>
@@ -32,8 +38,8 @@ export default class ToDo extends Component {
                 {isEditing? (
                     <TextInput 
                         style={[
-                            styles.input, 
                             styles.text,
+                            styles.input,
                             isCompleted ? styles.completedText : styles.uncompletedText
                         ]}
                         value={this.state.ToDoValue}
@@ -46,6 +52,7 @@ export default class ToDo extends Component {
                     <Text 
                     style={[
                         styles.text, 
+                        styles.input,
                         isCompleted ? styles.completedText : styles.uncompletedText
                         ]}
                     >
@@ -68,7 +75,7 @@ export default class ToDo extends Component {
                                     <Text style={styles.actionText}>✎</Text>
                                 </View>
                             </TouchableOpacity>
-                            <TouchableOpacity>
+                            <TouchableOpacity onPressOut={() => deleteToDo(id)}>
                                 <View style={styles.actionContainer}>
                                     <Text style={styles.actionText}>❌</Text>
                                 </View>
@@ -86,8 +93,7 @@ export default class ToDo extends Component {
         });
     }
     _startEditing = () => {
-        const {text} = this.props;
-        this.setState({ isEditing: true, ToDoValue: text });
+        this.setState({ isEditing: true });
     };
     _finishEditing = () => {
         this.setState({
@@ -137,7 +143,6 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         width: width / 2,
-        justifyContent: "space-between"
     },
     action: {
         flexDirection: "row"
@@ -147,6 +152,8 @@ const styles = StyleSheet.create({
         marginHorizontal: 10
     },
     input: {
-        marginVertical: 15
+        width: width /2,
+        marginVertical: 15,
+        paddingBottom: 3
     }
 });
