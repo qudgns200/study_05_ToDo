@@ -1,2 +1,3 @@
 # study_05_ToDo
-Study_react
+
+To Do List made with React Native.
